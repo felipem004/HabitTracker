@@ -1,0 +1,100 @@
+# ============================================================
+# pyproject.toml — arquivo de configuração do projeto Python
+# ============================================================
+# Este arquivo usa o formato TOML (Tom's Obvious, Minimal Language):
+#   - [secao]        -> agrupa configurações relacionadas
+#   - chave = valor  -> define uma configuração
+#   - [ ... ]        -> lista de valores
+#
+# Ele é o padrão oficial do Python (PEP 518 e PEP 621) para descrever
+# um projeto: nome, versão, dependências, como construir o pacote e
+# quais comandos de terminal ele cria.
+
+
+# ------------------------------------------------------------
+# [build-system] — COMO o projeto é empacotado/instalado
+# ------------------------------------------------------------
+# Quando você roda "pip install .", o pip não sabe sozinho transformar
+# a pasta em um pacote instalável. Ele lê esta seção para descobrir
+# qual ferramenta ("build backend") deve fazer esse trabalho.
+[build-system]
+# Pacotes que o pip baixa (num ambiente temporário) só para construir
+# o projeto. Aqui usamos o setuptools, o backend mais tradicional.
+requires = ["setuptools>=77"]
+# O módulo dentro do setuptools que sabe executar o build.
+build-backend = "setuptools.build_meta"
+
+
+# ------------------------------------------------------------
+# [project] — metadados do projeto (O QUE ele é)
+# ------------------------------------------------------------
+[project]
+# Nome do pacote. É por esse nome que o pip o identifica
+# (ex: "pip show habit-tracker", "pip uninstall habit-tracker").
+name = "habit-tracker"
+
+# Versão no formato MAJOR.MINOR.PATCH (Versionamento Semântico):
+#   - MAJOR: mudanças que quebram compatibilidade
+#   - MINOR: funcionalidades novas compatíveis
+#   - PATCH: correções de bugs
+# Começamos em 0.x.y, que por convenção indica "em desenvolvimento".
+# Referência: https://semver.org/lang/pt-BR/
+version = "0.1.0"
+
+description = "Rastreador de hábitos pessoais via terminal (CLI)."
+
+# Versão mínima do Python aceita. O pip se recusa a instalar em
+# versões mais antigas, evitando erros confusos em tempo de execução.
+requires-python = ">=3.10"
+
+# Dependências de execução: bibliotecas que o projeto PRECISA para
+# funcionar. O pip instala todas automaticamente junto com o projeto.
+#
+# ">=13" define só um limite mínimo (versão com os recursos que
+# vamos usar). Não "travamos" uma versão exata aqui de propósito:
+# em pacotes, o recomendado é declarar faixas compatíveis.
+dependencies = [
+    "rich>=13",
+]
+
+# Licença do projeto, escrita como identificador SPDX: uma lista
+# padronizada de nomes de licenças (https://spdx.org/licenses/).
+# O texto completo fica no arquivo LICENSE, na raiz do repositório,
+# que o setuptools encontra e inclui no pacote automaticamente.
+license = "MIT"
+
+# Campos que vamos adicionar depois, quando os arquivos existirem:
+#   readme  = "README.md"   -> o build falha se o arquivo não existir
+#   authors = [...]         -> cuidado: o que for colocado aqui é público
+
+
+# ------------------------------------------------------------
+# [project.scripts] — comandos de terminal criados pelo projeto
+# ------------------------------------------------------------
+# É AQUI que nasce o comando "habit" (RF-01).
+#
+# Formato:  nome_do_comando = "pacote.modulo:funcao"
+#
+# Ao instalar o projeto, o pip cria um pequeno executável chamado
+# "habit" dentro de .venv/bin/. Quando você digita "habit" no
+# terminal, esse executável importa o módulo "habit.cli" e chama
+# a função "main()" dele.
+#
+# Referência: https://packaging.python.org/en/latest/specifications/entry-points/
+[project.scripts]
+habit = "habit.cli:main"
+
+
+# ------------------------------------------------------------
+# [tool.setuptools.packages.find] — onde está o código-fonte
+# ------------------------------------------------------------
+# Estamos usando o "src layout": o código fica em src/habit/,
+# e não direto na raiz do projeto. Aqui dizemos ao setuptools
+# para procurar pacotes dentro da pasta "src".
+#
+# Vantagem do src layout: impede que você importe sem querer o
+# código "solto" da pasta, em vez da versão instalada — assim
+# os testes rodam contra o que realmente foi instalado.
+# Referência: https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/
+[tool.setuptools.packages.find]
+where = ["src"]
