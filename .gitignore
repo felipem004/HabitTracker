@@ -1,0 +1,45 @@
+# Ambiente do Venv
+.venv/
+
+# Arquivos de banco SQLite (caso algum seja criado dentro do projeto,
+# por exemplo durante testes ou desenvolvimento)
+*.db
+*.sqlite
+*.sqlite3
+# Arquivos temporários que o SQLite cria enquanto o banco está aberto
+*.db-journal
+*.db-wal
+*.db-shm
+
+# ------------------------------------------------------------
+# Segredos e configurações locais
+# ------------------------------------------------------------
+.env
+.env.*
+
+# ------------------------------------------------------------
+# Arquivos gerados automaticamente pelo Python
+# ------------------------------------------------------------
+__pycache__/
+*.py[cod]
+
+# Artefatos de build/empacotamento (gerados pelo pip/pyproject)
+build/
+dist/
+*.egg-info/
+
+# ------------------------------------------------------------
+# Ferramentas de teste
+# ------------------------------------------------------------
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ------------------------------------------------------------
+# Editores e sistema operacional
+# ------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
